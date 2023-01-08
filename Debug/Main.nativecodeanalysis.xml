@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\mangy\Documents\Sem 3\Data Structure and Algorithm\program\GroceryInventorySystem\</FILEPATH>
+      <FILENAME>List.h</FILENAME>
+      <LINE>17</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'List&lt;Item&gt;::Node::link' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>List&lt;Item&gt;::Node::{ctor}</FUNCTION>
+    <DECORATED>??0Node@?$List@VItem@@@@QAE@XZ</DECORATED>
+    <FUNCLINE>17</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>List&lt;Item&gt;::Node::link</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
