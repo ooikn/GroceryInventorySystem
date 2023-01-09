@@ -8,10 +8,10 @@ using namespace std;
 int main() {
 	Item item;
 	List<Item> manage;
-	int select;
+	int select,sortSelect;
 	bool exit = false;
 	do {
-		cout << "Welcome to Grocery Inventory System\n"
+		cout << "Welcome to Grocery Inventory System\n" // menu for the user to choose the function
 			<< "1. Add item\n"
 			<< "2. Display item\n"
 			<< "3. Sort items\n"
@@ -21,7 +21,8 @@ int main() {
 			<< "Pleae select your option: ";
 		cin >> select;
 		cout << endl;
-		while (cin.fail() || select <=0 || select > 6) {
+		while (cin.fail() || select <=0 || select > 6) // check the validation of the input
+		{
 			cin.clear();
 			cin.ignore(10,'\n');
 			cout << "Invallid Option\n"
@@ -29,16 +30,41 @@ int main() {
 			cin >> select;
 			cout << endl;
 		}
-		if (select == 1)
+		if (select == 1) 
 		{
-			manage.addItem();
+			manage.addItem(); // call the addItem function in List class
+			cout << "The item is added successfully!\n\n";
 			
 		}
 		else if (select == 2) 
 		{
-			manage.displayItem();
+			manage.displayItem(); //call the displayItem function in List class
 		}
-		else if (select == 6) {
+		else if (select == 3)
+		{
+			cout << "Sort Condition:\n"
+				<< "1. Item ID\n"
+				<< "2. Item Name\n"
+				<< "3. Item Price(RM)\n"
+				<< "4. Item Quantity\n"
+				<<"Please select the sort condition: ";
+			cin >> sortSelect;
+			while (cin.fail() || select <= 0 || select > 4) // check the validation of the input
+			{
+				cin.clear();
+				cin.ignore(10, '\n');
+				cout << "Invallid Option\n"
+					<< "Please select your sort condition again : ";
+				cin >> select;
+				cout << endl;
+			}
+			manage.sortItems(sortSelect);
+			cout << "The items are sorted successfully!\n";
+			cout << endl;
+			
+			
+		}
+		else {
 			cout << "The system success to exit!\n";
 			exit = true;
 		}

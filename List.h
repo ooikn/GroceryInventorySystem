@@ -31,6 +31,7 @@ public:
 	int numberOfItem();
 	int numOfFood();
 	int numOfDrink();
+	void sortItems(int sortCondition);
 };
 #endif
 
@@ -403,13 +404,15 @@ void List<t>::displayItem() {
 		SetConsoleTextAttribute(text, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN); // change the text back to white colour
 		cout << setfill('-') << setw(102) << right << " " << endl;
 
+		if (pCurr->link == 0)
+			break;
 		pCurr = pCurr->link;
 	}
 
 	if (warning) // if there has item less than or equal to 5,show message
 	{
 		SetConsoleTextAttribute(text, FOREGROUND_RED | FOREGROUND_INTENSITY); // change the text to red colour
-		cout << "The red line items means the quantity is low, please restock it!";
+		cout << "The red line items means the quantity is low(less than 6), please restock it!";
 		SetConsoleTextAttribute(text, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN); // change the text back to white colour
 	}
 	cout << endl;
@@ -442,6 +445,117 @@ void List<t>::displayItem() {
 		pCurr = pCurr->link;
 	}
 	itemFile.close();*/
+}
+
+template <class t>
+void List<t>::sortItems(int condition) {
+	pCurr = pHead;
+	Node* locationMin = new Node;
+	Node* pNext = new Node;
+	Item min;
+	if (condition == 1) // sort the items based on item's id
+	{
+		while (pCurr != 0)
+		{
+			locationMin = pCurr;
+			min = locationMin->data;
+			pNext = pCurr->link;
+			while (pNext != 0)
+			{
+				if (pNext->data.getItemID() < min.getItemID()) // compared between two item's id
+				{
+					locationMin = pNext;
+					min = pNext->data;
+				}
+				pNext = pNext->link; 
+			}
+			locationMin->data = pCurr->data;
+			pCurr->data = min;
+			if (pCurr->link == 0) // stop the looping while the next node is empty
+			{
+				break;
+			}
+			pCurr = pCurr->link; // change the current position to next node
+		}
+	}
+	else if (condition == 2) // sort the items based on item's name
+	{
+		while (pCurr != 0)
+		{
+			locationMin = pCurr;
+			min = locationMin->data;
+			pNext = pCurr->link;
+			while (pNext != 0)
+			{
+				if (pNext->data.getItemName() < min.getItemName()) // compared between two item's name
+				{
+					locationMin = pNext;
+					min = pNext->data;
+				}
+				pNext = pNext->link; 
+			}
+			locationMin->data = pCurr->data;
+			pCurr->data = min;
+			if (pCurr->link == 0) 
+			{
+				break;
+			}
+			pCurr = pCurr->link;
+		}
+	}
+	else if (condition == 3) // sort the items based on item's price
+	{
+		while (pCurr != 0)
+		{
+			locationMin = pCurr;
+			min = locationMin->data;
+			pNext = pCurr->link;
+			while (pNext != 0)
+			{
+				if (pNext->data.getItemPrice() < min.getItemPrice()) // compared between two item's price
+				{
+					locationMin = pNext;
+					min = pNext->data;
+				}
+				pNext = pNext->link;
+			}
+			locationMin->data = pCurr->data;
+			pCurr->data = min;
+			if (pCurr->link == 0) {
+				break;
+			}
+			pCurr = pCurr->link;
+		}
+	}
+	else if (condition == 4) // sort the items based on item's quantity
+	{
+		bool cont = true;
+		while (pCurr != 0) 
+		{
+			locationMin = pCurr;
+			min = locationMin->data;
+			pNext = pCurr->link;
+			while (pNext != 0)
+			{
+				if (pNext->data.getItemQuantity() < min.getItemQuantity()) // compared between two item's quantity
+				{
+					locationMin = pNext;
+					min = pNext->data;
+				}
+				pNext = pNext->link;
+			}
+			locationMin->data = pCurr->data;
+			pCurr->data = min;
+			if (pCurr->link == 0) {
+				break;
+			}
+			pCurr = pCurr->link;
+		}
+	}
+	else {
+		cout << "Invalid";
+	}
+	
 }
 
 template <class t>
