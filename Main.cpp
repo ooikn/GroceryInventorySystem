@@ -64,6 +64,19 @@ int main() {
 			
 			
 		}
+		else if (select == 5) {
+			if (manage.numberOfItem() == 0) {
+				cout << "There is no item in the inventory!" << endl << endl;
+			}
+			else {
+				cout << "Enter the itemID or itemName of the item you wish to restock: ";
+				cin >> itemToRestock;
+				cout << endl;
+				if (manage.restockItems(itemToRestock) == false) {
+					cout << "No item match your description!\n\n";
+				}
+			}
+		}
 		else {
 			cout << "The system success to exit!\n";
 			exit = true;
