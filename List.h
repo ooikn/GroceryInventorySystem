@@ -32,6 +32,7 @@ public:
 	int numOfFood();
 	int numOfDrink();
 	void sortItems(int sortCondition);
+	bool restockItems(string);
 };
 #endif
 
@@ -556,6 +557,46 @@ void List<t>::sortItems(int condition) {
 		cout << "Invalid";
 	}
 	
+}
+
+template <class t>
+bool List<t>::restockItems(string itemRestock) {
+	int quantity = 0;
+	pCurr = pHead;
+	if (pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock) {
+		cout << "Enter the quantity to restock: ";
+		cin >> quantity;
+		cout << endl;
+		while (quantity < 5) {
+			cout << "Minimum quantity to restock is 5\n\n";
+			cout << "Enter the quantity to restock: ";
+			cin >> quantity;
+			cout << endl;
+		}
+		pCurr->data.setItemQuantity(pCurr->data.getItemQuantity() + quantity);
+		cout << "Successfully updated item quantity!!!" << endl << endl;
+	}
+	while ((pCurr->data.getItemName() != itemRestock || pCurr->data.getItemID() != itemRestock) && pCurr->link != 0) {
+		pCurr = pCurr->link;
+		if (pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock) {
+			cout << "Enter the quantity to restock: ";
+			cin >> quantity;
+			while (quantity < 5) {
+				cout << "Minimum quantity to restock is 5\n\n";
+				cout << "Enter the quantity to restock: ";
+				cin >> quantity;
+				cout << endl;
+			}
+			pCurr->data.setItemQuantity(pCurr->data.getItemQuantity() + quantity);
+			cout << "Successfully updated item quantity!!!" << endl << endl;
+		}
+	}
+	if ((pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock)) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 template <class t>
