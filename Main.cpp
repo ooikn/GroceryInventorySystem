@@ -10,6 +10,7 @@ int main() {
 	List<Item> manage;
 	int select,sortSelect;
 	bool exit = false;
+	string itemToRestock;
 	do {
 		cout << "Welcome to Grocery Inventory System\n" // menu for the user to choose the function
 			<< "1. Add item\n"
