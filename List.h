@@ -5,8 +5,9 @@
 #include <Windows.h>
 #include "Item.h"
 using namespace std;
-#ifndef MANAGEITEM_H
-#define MANAGEITEM_H
+
+#ifndef LIST_H
+#define LIST_H
 
 template<class t>
 class List {
@@ -33,6 +34,8 @@ public:
 	int numOfDrink();
 	void sortItems(int sortCondition);
 	bool restockItems(string);
+	void readFromFile();
+	void writeToFile();
 };
 #endif
 
@@ -422,30 +425,8 @@ void List<t>::displayItem() {
 		<< "Total Number of Items: " << itemNum << endl
 		<< "Total Number of Foods: " << foodNum << endl
 		<< "Total Number of Drinks: " << drinkNum << endl
-		<< "Total Number of Items Which Need to Restock: " << numLow 
+		<< "Total Number of Items Which Need to Restock: " << numLow
 		<< endl << endl;
-	// ignore the code under this line
-	/*ofstream itemFile;
-	itemFile.open("item.csv",ios::out);
-	itemFile << "ID" << ","
-		<< "Name" << ","
-		<< "Type" << ","
-		<< "Arrival Date" << "," 
-		<< "Expired Date" << ","
-		<< "Price(RM)" << "," 
-		<< "Quantity" << endl;
-
-	while (pCurr != 0) {
-		itemFile << pCurr->data.getItemID() << ","
-			<< pCurr->data.getItemName() << ","
-			<< pCurr->data.getItemType() << ","
-			<< pCurr->data.getArrivalDate() << ","
-			<< pCurr->data.getExpireDate() << ","
-			<< pCurr->data.getItemPrice() << ","
-			<< pCurr->data.getItemQuantity() << endl;
-		pCurr = pCurr->link;
-	}
-	itemFile.close();*/
 }
 
 template <class t>
@@ -567,7 +548,9 @@ bool List<t>::restockItems(string itemRestock) {
 		cout << "Enter the quantity to restock: ";
 		cin >> quantity;
 		cout << endl;
-		while (quantity < 5) {
+		while (cin.fail() || quantity < 5) {
+			cin.clear();
+			cin.ignore(10);
 			cout << "Minimum quantity to restock is 5\n\n";
 			cout << "Enter the quantity to restock: ";
 			cin >> quantity;
@@ -581,7 +564,9 @@ bool List<t>::restockItems(string itemRestock) {
 		if (pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock) {
 			cout << "Enter the quantity to restock: ";
 			cin >> quantity;
-			while (quantity < 5) {
+			while (cin.fail() || quantity < 5) {
+				cin.clear();
+				cin.ignore(10);
 				cout << "Minimum quantity to restock is 5\n\n";
 				cout << "Enter the quantity to restock: ";
 				cin >> quantity;
@@ -589,6 +574,7 @@ bool List<t>::restockItems(string itemRestock) {
 			}
 			pCurr->data.setItemQuantity(pCurr->data.getItemQuantity() + quantity);
 			cout << "Successfully updated item quantity!!!" << endl << endl;
+			break;
 		}
 	}
 	if ((pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock)) {
@@ -597,6 +583,106 @@ bool List<t>::restockItems(string itemRestock) {
 	else {
 		return false;
 	}
+}
+
+template <class t>
+void List<t>::readFromFile() {
+	ifstream itemFile; // create variable for the input file
+	string skip, ID, name, type, arrDate, expDate, price, qty; // create varaibles to store data in string form
+
+	itemFile.open("item.csv", ios::in); // open input file
+	Node* pNew = new Node; // create a new node
+	pCurr = pHead; // reset the current node to the first node
+	
+
+	if (itemFile.fail()) {
+		cout << "Error Opening File" << endl << endl;
+	}
+
+	getline(itemFile, skip); // skip the first line of the item excel file
+	while (!itemFile.eof()) { // read all data in the item excel file
+		getline(itemFile, ID, ',');
+		getline(itemFile, name, ',');
+		getline(itemFile, type, ',');
+		getline(itemFile, arrDate, ',');
+		getline(itemFile, expDate, ',');
+		getline(itemFile, price, ',');
+		getline(itemFile, qty, '\n');
+		
+		double priceNum = stod(price); // convert price and quantity to number
+		int qtyNum = stoi(qty);
+
+		pNew->data.setItemID(ID); // insert data into linked list
+		pNew->data.setItemName(name);
+		pNew->data.setItemType(type);
+		if (pNew->data.getItemType() == "Food") { // if the item type is food, increment of food number
+			foodNum++;
+		}
+		else {
+			drinkNum++; // if the item type is drink, increment of drink number
+		}
+		pNew->data.setArrivalDate(arrDate);
+		pNew->data.setExpireDate(expDate);
+		pNew->data.setItemPrice(priceNum);
+		pNew->data.setItemQuantity(qtyNum);
+
+		if (itemNum == 0) // insert a new node into linked list if the list is empty
+		{
+			pNew->link = pHead;
+			pHead = pNew;
+			pTail = pNew;
+			pCurr = pHead;
+		}
+		else // insert a new node into linked list if the list is not empty
+		{
+			pNew->link = pCurr->link;
+			pCurr->link = pNew;
+			pCurr = pNew;
+			if (pCurr == NULL)
+			{
+				pTail = pCurr;
+			}
+		}
+		pNew = new Node;
+		itemNum++;
+	}
+
+	itemFile.close(); // close the input file
+}
+
+
+template <class t>
+void List<t>::writeToFile() { // write output to item excel file
+	ofstream itemFile; // create variable for output file
+	itemFile.open("item.csv",ios::out); // open item excel file in the folder
+	itemFile << "ID" << "," // write the title in the first line
+		<< "Name" << ","
+		<< "Type" << ","
+		<< "Arrival Date" << ","
+		<< "Expired Date" << ","
+		<< "Price(RM)" << ","
+		<< "Quantity" << endl;
+
+	pCurr = pHead; // reset the current node to the first node
+
+	while (pCurr != 0) { // insert all the data into item excel file
+		itemFile << pCurr->data.getItemID() << "," 
+			<< pCurr->data.getItemName() << ","
+			<< pCurr->data.getItemType() << ","
+			<< pCurr->data.getArrivalDate() << ","
+			<< pCurr->data.getExpireDate() << ","
+			<< pCurr->data.getItemPrice() << ",";
+			if (pCurr->link != 0) {
+				itemFile << pCurr->data.getItemQuantity() << endl; // if the next node is not empty, proceed to next line
+			}
+			else
+			{
+				itemFile << pCurr->data.getItemQuantity(); // if the next node is empty, stop at this line
+			}
+			pCurr = pCurr->link; // move the current node to next node
+		
+	}
+	itemFile.close(); // close the item excel file
 }
 
 template <class t>

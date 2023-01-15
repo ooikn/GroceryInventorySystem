@@ -1,3 +1,5 @@
 ID,Name,Type,Arrival Date,Expired Date,Price(RM),Quantity
-D-1,Ice,Drink,15 / 2 / 2021,15 / 1 / 2022,2,1
-D-2,dd,Drink,5 / 1 / 2022,6 / 1 / 2022,2,5
+D-1,Pepsi,Drink,5/1/2022,5/2/2022,2.5,50
+D-2,100-Plus,Drink,15/1/2022,15/2/2022,2,40
+F-1,Lemon,Food,1/1/2022,20/1/2022,3,30
+F-2,Apple,Food,20/1/2022,30/1/2022,5,25

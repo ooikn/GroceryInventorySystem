@@ -11,6 +11,8 @@ int main() {
 	int select,sortSelect;
 	bool exit = false;
 	string itemToRestock;
+
+	manage.readFromFile(); // read the data in the item excel file
 	do {
 		cout << "Welcome to Grocery Inventory System\n" // menu for the user to choose the function
 			<< "1. Add item\n"
@@ -59,19 +61,19 @@ int main() {
 				cin >> select;
 				cout << endl;
 			}
-			manage.sortItems(sortSelect);
+			manage.sortItems(sortSelect); // call sort function to sort the items
 			cout << "The items are sorted successfully!\n";
 			cout << endl;
 			
 			
 		}
-		else if (select == 5) {
+		else if (select == 5) { 
 			if (manage.numberOfItem() == 0) {
 				cout << "There is no item in the inventory!" << endl << endl;
 			}
 			else {
 				cout << "Enter the itemID or itemName of the item you wish to restock: ";
-				cin >> itemToRestock;
+				getline(cin, itemToRestock);
 				cout << endl;
 				if (manage.restockItems(itemToRestock) == false) {
 					cout << "No item match your description!\n\n";
@@ -83,5 +85,7 @@ int main() {
 			exit = true;
 		}
 	} while (!exit);
+	manage.writeToFile(); // insert the data into item excel file
+	cout << "You can check the details in item excel file!\n\n";
 	return 0;
 }
