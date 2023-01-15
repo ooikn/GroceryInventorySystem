@@ -543,12 +543,12 @@ void List<t>::sortItems(int condition) {
 template <class t>
 bool List<t>::restockItems(string itemRestock) {
 	int quantity = 0;
-	pCurr = pHead;
-	if (pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock) {
-		cout << "Enter the quantity to restock: ";
+	pCurr = pHead; 
+	if (pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock) { // check if the item name or item quantity match with the input(itemRestock)
+		cout << "Enter the quantity to restock: "; // allow user to input the quantity to restock
 		cin >> quantity;
 		cout << endl;
-		while (cin.fail() || quantity < 5) {
+		while (cin.fail() || quantity < 5) { // check the validation of quantity
 			cin.clear();
 			cin.ignore(10);
 			cout << "Minimum quantity to restock is 5\n\n";
@@ -556,15 +556,15 @@ bool List<t>::restockItems(string itemRestock) {
 			cin >> quantity;
 			cout << endl;
 		}
-		pCurr->data.setItemQuantity(pCurr->data.getItemQuantity() + quantity);
+		pCurr->data.setItemQuantity(pCurr->data.getItemQuantity() + quantity); //update quantity
 		cout << "Successfully updated item quantity!!!" << endl << endl;
 	}
-	while ((pCurr->data.getItemName() != itemRestock || pCurr->data.getItemID() != itemRestock) && pCurr->link != 0) {
+	while ((pCurr->data.getItemName() != itemRestock || pCurr->data.getItemID() != itemRestock) && pCurr->link != 0) { //traverse the list of item(s) to find the match
 		pCurr = pCurr->link;
-		if (pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock) {
-			cout << "Enter the quantity to restock: ";
+		if (pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock) { // check if the item name or item quantity match with the input(itemRestock)
+			cout << "Enter the quantity to restock: "; // allow user to input the quantity to restock
 			cin >> quantity;
-			while (cin.fail() || quantity < 5) {
+			while (cin.fail() || quantity < 5) { // check the validation of quantity
 				cin.clear();
 				cin.ignore(10);
 				cout << "Minimum quantity to restock is 5\n\n";
@@ -572,15 +572,15 @@ bool List<t>::restockItems(string itemRestock) {
 				cin >> quantity;
 				cout << endl;
 			}
-			pCurr->data.setItemQuantity(pCurr->data.getItemQuantity() + quantity);
+			pCurr->data.setItemQuantity(pCurr->data.getItemQuantity() + quantity); //update quantity
 			cout << "Successfully updated item quantity!!!" << endl << endl;
-			break;
+			break; // stop the loop if the item name or item quantity match with the input(itemRestock)
 		}
 	}
-	if ((pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock)) {
+	if ((pCurr->data.getItemName() == itemRestock || pCurr->data.getItemID() == itemRestock)) { // item match
 		return true;
 	}
-	else {
+	else { // item(s) do not match
 		return false;
 	}
 }
